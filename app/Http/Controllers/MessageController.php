@@ -24,8 +24,8 @@ class MessageController extends Controller
      */
     public function create()
     {
-        //
-        return view('messages.create');
+        $recipients = \App\User::all();
+        return view('messages.create', compact('recipients'));
     }
 
     /**
@@ -36,8 +36,27 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        return "I should be saving a new message now";
+        // The new message might be saved or sent.
+        // The difference is whether or not sent_at is filled in.
+        // Look for buttons in the input to figure out which action
+        // the user wants to perform.
+
+        $verb = $request->input('button');
+
+        $message = new \App\Message;
+
+        $message->sender_id = \Auth::user()->id;
+        $message->subject = $request->input('subject');
+        $message->body = $request->input('body');
+
+        $message->save();
+
+        foreach ($request->input('recipients') as $recipient) {
+            // Save a message_user record
+        }
+
+        return redirect('home');
+
     }
 
     /**
