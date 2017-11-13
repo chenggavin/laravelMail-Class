@@ -17,7 +17,7 @@ class Message extends Model
     }
 
     public function recipients() {
-      return $this->belongsToMany('App\User', 'recipient_id');
+      return $this->belongsToMany('App\User', 'message_user', 'message_id', 'recipient_id');
     }
 
 }

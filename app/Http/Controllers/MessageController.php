@@ -51,9 +51,7 @@ class MessageController extends Controller
 
         $message->save();
 
-        foreach ($request->input('recipients') as $recipient) {
-            // Save a message_user record
-        }
+        $message->recipients()->sync($request->input('recipients'));
 
         return redirect('home');
 
