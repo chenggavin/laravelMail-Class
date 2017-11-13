@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Carbon\Carbon;
+
 class MessageController extends Controller
 {
     /**
@@ -36,18 +38,16 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-        // The new message might be saved or sent.
-        // The difference is whether or not sent_at is filled in.
-        // Look for buttons in the input to figure out which action
-        // the user wants to perform.
-
-        $verb = $request->input('button');
-
+        
         $message = new \App\Message;
 
         $message->sender_id = \Auth::user()->id;
         $message->subject = $request->input('subject');
         $message->body = $request->input('body');
+
+        if ($request->input('button') === 'send') {
+            $message->sent_at = Carbon::now();
+        }
 
         $message->save();
 
