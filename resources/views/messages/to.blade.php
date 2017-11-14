@@ -24,7 +24,7 @@
     @foreach ($messages as $message)
       <tr onclick="document.location='/messages/{{ $message->id }}'" class="{{ $message->pivot->is_read == true ? '' : 'unread' }}">
         <td>
-          @if ($message->is_starred)
+          @if ($message->pivot->is_starred)
             <strong>&#9734;</strong>
           @endif
         </td>
