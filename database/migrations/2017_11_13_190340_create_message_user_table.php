@@ -19,6 +19,9 @@ class CreateMessageUserTable extends Migration
             $table->foreign('message_id')->references('id')->on('messages');
             $table->integer('recipient_id')->unsigned();
             $table->foreign('recipient_id')->references('id')->on('users');
+            $table->boolean('is_starred')->nullable()->default(false);
+            $table->boolean('is_seen')->nullable()->default(false);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

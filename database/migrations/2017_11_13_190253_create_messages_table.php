@@ -19,7 +19,6 @@ class CreateMessagesTable extends Migration
             $table->foreign('sender_id')->references('id')->on('users');
             $table->string('subject')->nullable();
             $table->string('body')->nullable();
-            $table->boolean('is_starred')->nullable()->default(false);
             $table->datetime('sent_at')->nullable();
             $table->softDeletes();
             $table->timestamps();

@@ -8,6 +8,12 @@ use Carbon\Carbon;
 
 class MessageController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,8 +21,11 @@ class MessageController extends Controller
      */
     public function index()
     {
-        //
-        return view('messages.to');
+
+        // TODO: This is so wrong. It's just here so I can work up the table.
+
+        $messages = \Auth::user()->received()->get();
+        return view('messages.to', compact('messages'));
     }
 
     /**
@@ -38,7 +47,7 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $message = new \App\Message;
 
         $message->sender_id = \Auth::user()->id;

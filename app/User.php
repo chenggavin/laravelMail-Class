@@ -32,6 +32,6 @@ class User extends Authenticatable
     }
 
     public function received() {
-        return $this->belongsToMany('App\Message');
+        return $this->belongsToMany('App\Message', 'message_user', 'recipient_id', 'message_id')->withTimestamps();;
     }
 }
