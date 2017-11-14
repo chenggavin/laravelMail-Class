@@ -21,11 +21,9 @@ class MessageController extends Controller
      */
     public function index()
     {
-
-        // TODO: This is so wrong. It's just here so I can work up the table.
-
+        $title = "Inbox";
         $messages = \Auth::user()->received()->get();
-        return view('messages.to', compact('messages'));
+        return view('messages.to', compact('messages', 'title'));
     }
 
     /**
@@ -74,8 +72,9 @@ class MessageController extends Controller
      */
     public function show($id)
     {
-        //
-        return view('messages.show');
+        $message = \App\Message::find($id);
+        $message->recipients()->sync([\Auth::user()->id => ['is_read' => true]]);
+        return view('messages.show', compact('message'));
     }
 
     /**

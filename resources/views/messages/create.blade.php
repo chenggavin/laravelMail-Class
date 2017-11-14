@@ -2,6 +2,7 @@
 
 @section('title')
 
+  <a href="{{ URL::previous() }}" class="btn btn-xs btn-default">Back</a>
   Create a New Message
 
 @endsection
@@ -43,8 +44,8 @@
 
     <div class="form-group">
       <div class="col-sm-12 text-center">
-        <button type="submit" name="button" value="save" class="btn btn-default">Save</button>
-        <button type="submit" name="button" value="send" class="btn btn-default">Send</button>
+        <button type="submit" name="button" value="save" class="btn btn-xs btn-default">Save</button>
+        <button type="submit" name="button" value="send" class="btn btn-xs btn-default">Send</button>
       </div>
     </div>
 

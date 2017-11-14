@@ -19,7 +19,7 @@ class Message extends Model
     }
 
     public function recipients() {
-      return $this->belongsToMany('App\User', 'message_user', 'message_id', 'recipient_id')->withTimestamps();
+      return $this->belongsToMany('App\User', 'message_user', 'message_id', 'recipient_id')->withPivot('is_starred', 'is_read')->withTimestamps();
     }
 
     public function prettySent() {
