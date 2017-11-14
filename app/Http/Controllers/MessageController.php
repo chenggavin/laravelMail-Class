@@ -75,7 +75,10 @@ class MessageController extends Controller
         
         // Is $id in $user->sent()?
         // Is $id in $user->received()?
-        if (\Auth::user()->sent->contains($id) || \Auth::user()->received->contains($id)) {
+        if (
+            \Auth::user()->sent->contains($id) || 
+            \Auth::user()->received->contains($id)
+        ) {
 
             $message = \App\Message::find($id);
             $message->recipients()->sync([\Auth::user()->id => ['is_read' => true]]);
