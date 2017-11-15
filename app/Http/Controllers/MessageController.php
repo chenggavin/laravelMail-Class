@@ -156,8 +156,10 @@ class MessageController extends Controller
         }
 
         $star->save();
-        $user = \Auth::user()->received()->get();        
-        return redirect('/messages/$id');
+        $user = \Auth::user()->received()->get();  
+        $message = \App\Message::find($id);
+        $message->recipients()->sync([\Auth::user()->id => ['is_read' => true]]);      
+        return view('/messages.show', compact('star', 'message'));
     }
 
     /**

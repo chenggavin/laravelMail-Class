@@ -19,7 +19,7 @@
     <tbody>
 
     @foreach ($messages as $message)
-	        </td>
+	<tr onclick="document.location='/messages/{{ $message->id }}'"></td>
         <td>{{ $message->sender->name }}</td>
         <td>{{ $message->subject }}</td>
         <td>{{ $message->prettySent() }}</td>
