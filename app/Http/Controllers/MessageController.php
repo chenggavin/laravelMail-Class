@@ -157,6 +157,13 @@ class MessageController extends Controller
             return view('messages.edit', compact('message'));
 
         }
+        else if ( \Auth::user()->received->contains($id) == false ) {
+             $message = \Auth::user()->trash()->orderBy('id', 'desc')->get();
+             $message = \App\Message::find($id);
+             $show_star = false;
+
+             return view('messages.show', compact('message', 'show_star'));
+        }
         else {
             return redirect('/messages');
         }
@@ -197,7 +204,14 @@ class MessageController extends Controller
     public function destroy($id)
     {
         $message = \App\Message::find($id);
-        $message->recipients()->updateExistingPivot(\Auth::user()->id, ['deleted_at' => Carbon::now()]);
+        $test = $message->recipients()->first()->pivot->deleted_at;
+
+        if ($test == null) {
+            $message->recipients()->updateExistingPivot(\Auth::user()->id, ['deleted_at' => Carbon::now()]);
+        }
+        else {
+            $message->recipients()->updateExistingPivot(\Auth::user()->id, ['deleted_at' => null]);
+        }
         return redirect('/messages');
     }
 
