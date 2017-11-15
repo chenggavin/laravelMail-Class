@@ -31,5 +31,6 @@ Route::get('/messages/sent', 'MessageController@sent');
 
 Route::get('/messages/drafts', 'MessageController@drafts');
 
+
 Route::resource('/messages', 'MessageController');
 

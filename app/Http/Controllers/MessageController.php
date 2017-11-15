@@ -101,7 +101,7 @@ class MessageController extends Controller
         if ( \Auth::user()->sent->contains($id) || \Auth::user()->received->contains($id)) {
 
             $message = \App\Message::find($id);
-            $message->recipients()->sync([\Auth::user()->id => ['is_read' => true]]);
+            $message->recipients()->updateExistingPivot([\Auth::user()->id => ['is_read' => true]]);
             return view('messages.show', compact('message'));
 
         }
