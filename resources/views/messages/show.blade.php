@@ -81,8 +81,7 @@
           <button type="submit" name="button" value="send" class="btn btn-primary">Send</button>
       </div>
 </form>
-</div>
-</div>
+
 
 
 @endsection
