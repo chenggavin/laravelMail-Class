@@ -3,7 +3,11 @@
 }
 
 .starred {
+  background-color: #FBFFB9;
+}
 
+.trashed {
+  background-color: #FFCCCC;
 }
 
 .button-form {

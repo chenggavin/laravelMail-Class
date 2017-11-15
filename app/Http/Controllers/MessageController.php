@@ -104,6 +104,8 @@ class MessageController extends Controller
      */
     public function show($id)
     {
+
+        // Ack! Deleted records don't show!
         
         if ( \Auth::user()->sent->contains($id) ) {
 
@@ -111,15 +113,23 @@ class MessageController extends Controller
 
             $message = \App\Message::find($id);
             $show_star = true;
+            $star_class = '';
+            $trash_class = '';
 
             if ( \Auth::user()->received->contains($id) ) {
                 $message->recipients()->updateExistingPivot(\Auth::user()->id, ['is_read' => true]);
+
+                $recipient = $message->recipients->find(\Auth::user()->id);
+                if ($recipient->pivot->is_starred) {
+                    $star_class = 'starred';
+                }
+
             }
             else {
                 $show_star = false;
             }
 
-            return view('messages.show', compact('message', 'show_star'));
+            return view('messages.show', compact('message', 'show_star', 'star_class', 'trash_class'));
 
         }
         else if ( \Auth::user()->received->contains($id) ) {
@@ -129,7 +139,15 @@ class MessageController extends Controller
             $message = \App\Message::find($id);
             $message->recipients()->updateExistingPivot(\Auth::user()->id, ['is_read' => true]);
             $show_star = true;
-            return view('messages.show', compact('message', 'show_star'));
+            $star_class = '';
+            $trash_class = '';
+
+            $recipient = $message->recipients->find(\Auth::user()->id);
+            if ($recipient->pivot->is_starred) {
+                $star_class = 'starred';
+            }
+
+            return view('messages.show', compact('message', 'show_star', 'star_class', 'trash_class'));
 
         }
         else if ( \Auth::user()->drafts->contains($id) ) {
@@ -139,6 +157,13 @@ class MessageController extends Controller
             $message = \App\Message::find($id);
             return view('messages.edit', compact('message'));
 
+        }
+        else if ( \Auth::user()->received->contains($id) == false ) {
+             $message = \Auth::user()->inboxTrash()->orderBy('id', 'desc')->get();
+             $message = \App\Message::find($id);
+             $show_star = false;
+
+             return view('messages.show', compact('message', 'show_star'));
         }
         else {
             return redirect('/messages');
@@ -180,17 +205,29 @@ class MessageController extends Controller
     public function destroy($id)
     {
         $message = \App\Message::find($id);
-        $message->recipients()->updateExistingPivot(\Auth::user()->id, ['deleted_at' => Carbon::now()]);
 
         $sentMessage = \App\Message::find($id);
         $sentMessage->is_deleted = true;
         $sentMessage->save();
 
+        $test = $message->recipients()->first()->pivot->deleted_at;
+
+        if ($test == null) {
+            $message->recipients()->updateExistingPivot(\Auth::user()->id, ['deleted_at' => Carbon::now()]);
+        }
+        else {
+            $message->recipients()->updateExistingPivot(\Auth::user()->id, ['deleted_at' => null]);
+        }
         return redirect('/messages');
     }
 
-    public function star($id) {
-        return "I should be starring a message right now";
+    public function star($id) 
+    {
+        $message = \App\Message::find($id);
+        $recipient = $message->recipients->find(\Auth::user()->id);
+        $message->recipients()->updateExistingPivot(\Auth::user()->id, ['is_starred' => !$recipient->pivot->is_starred]);
+        return redirect('/messages/' . $id);
+
     }
 
 }
