@@ -4,24 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Carbon\Carbon;
 
 class Message extends Model
 {
-
-    use SoftDeletes;
-
-    protected $dates = ['deleted_at'];
-
-    protected static function boot() {
-        parent::boot();
-
-        // static::addGlobalScope('sent', function (Builder $builder) {
-        //     $builder->where('sent_at', '!=', null);
-        // });
-    }
 
     public function sender() {
       return $this->belongsTo('App\User', 'sender_id');

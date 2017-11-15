@@ -138,10 +138,8 @@ class MessageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $star = \Auth::user();
-
         
-
+        $star = \Auth::user();
         if (collect($star->received()->where([
             ['is_starred','=', false],
             ['message_id', '=', $id]])->get())->isEmpty() === false ) {
@@ -158,8 +156,8 @@ class MessageController extends Controller
         }
 
         $star->save();
-        $user = \Auth::user()->received()->get();
-        return redirect('/messages');
+        $user = \Auth::user()->received()->get();        
+        return redirect('/messages/$id');
     }
 
     /**
@@ -170,9 +168,8 @@ class MessageController extends Controller
      */
     public function destroy($id)
     {
-        
-        $messages = \App\Message::find($id);
-        $messages->delete();
+        $message = \App\Message::find($id);
+        $message->recipients()->sync([\Auth::user()->id => ['deleted_at' => Carbon::now()]]);
         return redirect('/messages');
     }
 

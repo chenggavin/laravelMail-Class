@@ -11,6 +11,10 @@
 |
 */
 
+
+// Most specific routes go first!!!
+
+
 Route::get('/', function () {
     return view('welcome');
 });
