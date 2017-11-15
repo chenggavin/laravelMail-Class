@@ -67,4 +67,22 @@
   </div>
 </form>
 
+<hr>
+<form method="POST" action="/messages">
+                        {{ csrf_field() }}
+                  
+  <input name="recipients[]" type="hidden" value="{{ $message->sender_id }}">
+  <input name="subject" type="hidden" value="{{ $message->subject }}">
+      <div class="form-group">
+          <label for="messageContent"></label>
+          <textarea class="form-control" id="body" name="body" placeholder="Reply here" required></textarea>
+      </div>
+      <div class="form-group">
+          <button type="submit" name="button" value="send" class="btn btn-primary">Send</button>
+      </div>
+</form>
+</div>
+</div>
+
+
 @endsection
