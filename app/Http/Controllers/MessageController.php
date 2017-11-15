@@ -138,8 +138,28 @@ class MessageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-        return "I should be saving an existing message now";
+        $star = \Auth::user();
+
+        
+
+        if (collect($star->received()->where([
+            ['is_starred','=', false],
+            ['message_id', '=', $id]])->get())->isEmpty() === false ) {
+
+            $star->received()->where([
+            ['is_starred','=', false],
+            ['message_id', '=', $id]])->updateExistingPivot($id, ['is_starred'=> true]);
+        }
+
+        else {
+            $star->received()->where([
+                ['is_starred','=', true],
+                ['message_id', '=', $id]])->updateExistingPivot($id, ['is_starred'=> false]);
+        }
+
+        $star->save();
+        $user = \Auth::user()->received()->get();
+        return redirect('/messages');
     }
 
     /**
@@ -150,8 +170,10 @@ class MessageController extends Controller
      */
     public function destroy($id)
     {
-        //
-        return "I should be deleting a message now";
+        
+        $messages = \App\Message::find($id);
+        $messages->delete();
+        return redirect('/messages');
     }
 
 }

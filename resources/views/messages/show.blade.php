@@ -3,12 +3,24 @@
 @section('title')
 
   <a href="{{ URL::previous() }}" class="btn btn-xs btn-default">Back</a>
+  
+    <div class="pull-right">
 
-  <div class="pull-right">
-    <button class="btn btn-xs btn-default"><strong>&#9734;</strong></button>
-    <button class="btn btn-xs btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
-  </div>
+      <form method="post" action="/messages/{{ $message->id }}">
+        {{ method_field('PATCH') }}
+        {{ csrf_field() }}
+      <button class="btn btn-xs btn-default"><strong>&#9734;</strong></button>
+    </form>
+    <form method="POST" action="/messages/{{ $message->id }}">
+      {{ method_field('DELETE') }}
+      {{ csrf_field() }}
+      <button class="btn btn-xs btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
+    </form>
+    </div>
+ 
 
+
+  
 
 @endsection
 
