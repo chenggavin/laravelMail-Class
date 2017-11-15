@@ -20,7 +20,7 @@ class CreateMessagesTable extends Migration
             $table->string('subject')->nullable();
             $table->string('body')->nullable();
             $table->datetime('sent_at')->nullable();
-            $table->softDeletes();
+            $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });
     }

@@ -5,8 +5,14 @@
   <a href="{{ URL::previous() }}" class="btn btn-xs btn-default">Back</a>
 
   <div class="pull-right">
-    <button class="btn btn-xs btn-default"><strong>&#9734;</strong></button>
-    <button class="btn btn-xs btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
+    <form method="post" action="/messages/{{ $message->id }}">
+      <button class="btn btn-xs btn-default"><strong>&#9734;</strong></button>
+      {{ csrf_field() }}
+      {{ method_field('DELETE') }}
+      <button class="btn btn-xs btn-default">
+        <i class="fa fa-trash" aria-hidden="true"></i>
+      </button>
+    </form>
   </div>
 
 

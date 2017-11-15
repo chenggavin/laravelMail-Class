@@ -150,8 +150,9 @@ class MessageController extends Controller
      */
     public function destroy($id)
     {
-        //
-        return "I should be deleting a message now";
+        $message = \App\Message::find($id);
+        $message->recipients()->sync([\Auth::user()->id => ['deleted_at' => Carbon::now()]]);
+        return redirect('/messages');
     }
 
 }
