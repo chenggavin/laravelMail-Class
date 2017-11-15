@@ -19,4 +19,13 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/messages/starred', 'MessageController@starred');
+
+Route::get('/messages/trash', 'MessageController@trash');
+
+Route::get('/messages/sent', 'MessageController@sent');
+
+Route::get('/messages/drafts', 'MessageController@drafts');
+
 Route::resource('/messages', 'MessageController');
+

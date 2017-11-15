@@ -40,7 +40,13 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        &nbsp;
+                        <li><a href="/messages">Inbox</a></li>
+                        <li><a href="/messages/starred">Starred</a></li>
+                        <li><a href="/messages/sent">Sent</a></li>
+                        <li><a href="/messages/drafts">Drafts</a></li>
+                        <li><a href="/messages/trash">Trash</a></li>
+                        <li><a href="/messages/create"><button class="btn btn-xs btn-default">New</button></a></li>
+
                     </ul>
 
                     <!-- Right Side Of Navbar -->

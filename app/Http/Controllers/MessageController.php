@@ -26,6 +26,31 @@ class MessageController extends Controller
         return view('messages.to', compact('messages', 'title'));
     }
 
+    public function starred() {
+        $title = "Starred";
+        $messages = \Auth::user()->starred()->get();
+        return view('messages.to', compact('messages', 'title'));
+    }
+
+    public function trash() {
+        $title = "Trash";
+        $messages = \Auth::user()->trash()->get();
+        return view('messages.to', compact('messages', 'title'));
+    }
+
+    public function sent() {
+        $title = "Sent";
+        $messages = \Auth::user()->sent()->get();
+        return view('messages.from', compact('messages', 'title'));
+    }
+
+    public function drafts() {
+        $title = "Drafts";
+        $messages = \Auth::user()->drafts()->get();
+        return view('messages.from', compact('messages', 'title'));
+    }
+
+
     /**
      * Show the form for creating a new resource.
      *
@@ -73,23 +98,22 @@ class MessageController extends Controller
     public function show($id)
     {
         
-        // Is $id in $user->sent()?
-        // Is $id in $user->received()?
-        if (
-            \Auth::user()->sent->contains($id) || 
-            \Auth::user()->received->contains($id)
-        ) {
+        if ( \Auth::user()->sent->contains($id) || \Auth::user()->received->contains($id)) {
 
             $message = \App\Message::find($id);
             $message->recipients()->sync([\Auth::user()->id => ['is_read' => true]]);
             return view('messages.show', compact('message'));
 
         }
+        else if ( \Auth::user()->drafts->contains($id) ) {
+
+            $message = \App\Message::find($id);
+            return view('messages.edit', compact('message'));
+
+        }
         else {
             return redirect('/messages');
         }
-
-
 
     }
 
@@ -129,4 +153,5 @@ class MessageController extends Controller
         //
         return "I should be deleting a message now";
     }
+
 }

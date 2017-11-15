@@ -2,7 +2,7 @@
 
 @section('title')
 
-  Sent, Drafts
+  {{ $title }}
 
 @endsection
 

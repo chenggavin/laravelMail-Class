@@ -4,8 +4,6 @@
 
   {{ $title }}
 
-  <a href="/messages/create" class="pull-right btn btn-xs btn-default">New</a>
-
 @endsection
 
 @section('content')

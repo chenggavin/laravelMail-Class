@@ -2,7 +2,6 @@
 
 @section('title')
 
-  <a href="{{ URL::previous() }}" class="btn btn-xs btn-default">Back</a>
   Create a New Message
 
 @endsection
