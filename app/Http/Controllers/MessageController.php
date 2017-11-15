@@ -41,12 +41,18 @@ class MessageController extends Controller
     public function sent() {
         $title = "Sent";
         $messages = \Auth::user()->sent()->get();
+        foreach ($messages as $message) {
+            $message->link = '/messages/' . $message->id; 
+        }
         return view('messages.from', compact('messages', 'title'));
     }
 
     public function drafts() {
         $title = "Drafts";
         $messages = \Auth::user()->drafts()->get();
+        foreach ($messages as $message) {
+            $message->link = '/messages/' . $message->id . '/edit'; 
+        }
         return view('messages.from', compact('messages', 'title'));
     }
 
@@ -98,14 +104,36 @@ class MessageController extends Controller
     public function show($id)
     {
         
-        if ( \Auth::user()->sent->contains($id) || \Auth::user()->received->contains($id)) {
+        if ( \Auth::user()->sent->contains($id) ) {
+
+            // The logged-in user sent the message
 
             $message = \App\Message::find($id);
-            $message->recipients()->sync([\Auth::user()->id => ['is_read' => true]]);
-            return view('messages.show', compact('message'));
+            $show_star = true;
+
+            if ( \Auth::user()->received->contains($id) ) {
+                $message->recipients()->updateExistingPivot(\Auth::user()->id, ['is_read' => true]);
+            }
+            else {
+                $show_star = false;
+            }
+
+            return view('messages.show', compact('message', 'show_star'));
+
+        }
+        else if ( \Auth::user()->received->contains($id) ) {
+
+            // The logged-in user received the message
+
+            $message = \App\Message::find($id);
+            $message->recipients()->updateExistingPivot(\Auth::user()->id, ['is_read' => true]);
+            $show_star = true;
+            return view('messages.show', compact('message', 'show_star'));
 
         }
         else if ( \Auth::user()->drafts->contains($id) ) {
+
+            // The logged-in user is writing the message
 
             $message = \App\Message::find($id);
             return view('messages.edit', compact('message'));
@@ -151,8 +179,12 @@ class MessageController extends Controller
     public function destroy($id)
     {
         $message = \App\Message::find($id);
-        $message->recipients()->sync([\Auth::user()->id => ['deleted_at' => Carbon::now()]]);
+        $message->recipients()->updateExistingPivot(\Auth::user()->id, ['deleted_at' => Carbon::now()]);
         return redirect('/messages');
+    }
+
+    public function star($id) {
+        return "I should be starring a message right now";
     }
 
 }

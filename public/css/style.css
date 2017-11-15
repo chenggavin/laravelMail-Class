@@ -1,3 +1,15 @@
 .unread {
   background: #FBFFB9;
 }
+
+.starred {
+
+}
+
+.button-form {
+  float: right;
+}
+
+.btn {
+  margin: 0 8px !important;
+}

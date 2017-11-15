@@ -31,4 +31,17 @@ class Message extends Model
       return $pretty;
     }
 
+    public function prettyUpdated() {
+      $sent = Carbon::parse($this->updated_at);
+      $time = '';
+      if ($sent->hour > 11) {
+        $time = $sent->hour - 12 . ':' . sprintf('%02d', $sent->minute) . ' pm';
+      }
+      else {
+        $time = $sent->hour . ':' . sprintf('%02d', $sent->minute) . ' am';
+      }
+      $pretty = $sent->month . '/' . $sent->day . '/' . $sent->year . ' ' . $time;
+      return $pretty;
+    }
+
 }

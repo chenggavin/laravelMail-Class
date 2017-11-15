@@ -27,5 +27,7 @@ Route::get('/messages/sent', 'MessageController@sent');
 
 Route::get('/messages/drafts', 'MessageController@drafts');
 
+Route::post('/messages/{id}/star', 'MessageController@star');
+
 Route::resource('/messages', 'MessageController');
 
