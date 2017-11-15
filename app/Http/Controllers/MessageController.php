@@ -34,8 +34,9 @@ class MessageController extends Controller
 
     public function trash() {
         $title = "Trash";
-        $messages = \Auth::user()->trash()->get();
-        return view('messages.to', compact('messages', 'title'));
+        $inboxTrash = \Auth::user()->inboxTrash()->get();
+        $sentTrash = \Auth::user()->sentTrash()->get();
+        return view('messages.trash', compact('inboxTrash', 'sentTrash', 'title'));
     }
 
     public function sent() {
@@ -180,6 +181,11 @@ class MessageController extends Controller
     {
         $message = \App\Message::find($id);
         $message->recipients()->updateExistingPivot(\Auth::user()->id, ['deleted_at' => Carbon::now()]);
+
+        $sentMessage = \App\Message::find($id);
+        $sentMessage->is_deleted = true;
+        $sentMessage->save();
+
         return redirect('/messages');
     }
 
