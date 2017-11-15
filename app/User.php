@@ -61,8 +61,6 @@ class User extends Authenticatable
 
     public function inboxTrash() {
 
-        // TODO: Also show messages that we wrote and then deleted (sent or unsent)
-
         return 
             $this
                 ->belongsToMany('App\Message', 'message_user', 'recipient_id', 'message_id')
@@ -73,8 +71,6 @@ class User extends Authenticatable
     }
 
     public function sentTrash() {
-
-        // TODO: Also show messages that we wrote and then deleted (sent or unsent)
 
         return
             $this

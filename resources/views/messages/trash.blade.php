@@ -9,6 +9,7 @@
 @section('content')
 
   <table class="table">
+    <h4>Received Messages</h4>
     <thead>
       <tr>
         <th>From</th>
@@ -26,7 +27,22 @@
       </tr>
     @endforeach
 
-    @foreach ($sentTrash as $message)
+    </table>
+
+    <br>
+
+    <table class="table">
+    <h4>Sent Messages</h4>
+    <thead>
+      <tr>
+        <th>From</th>
+        <th>Subject</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+
+    @foreach ($sentTrash as $message) 
       <tr onclick="document.location='/messages/{{ $message->id }}'">
         <td>{{ $message->sender->name }}</td>
         <td>{{ $message->subject }}</td>
