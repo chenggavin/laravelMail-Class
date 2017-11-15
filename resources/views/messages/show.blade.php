@@ -6,19 +6,21 @@
 
   <div class="pull-right">
 
-@if ($show_star)
     <form class="button-form" method="post" action="/messages/{{ $message->id }}">
       {{ csrf_field() }}
       {{ method_field('DELETE') }}
-      <button class="btn btn-xs btn-default">
+      <button class="btn btn-xs btn-default {{ $trash_class }}">
         <i class="fa fa-trash" aria-hidden="true"></i>
       </button>
     </form>
+
+    @if ($show_star)
     <form class="button-form" method="post" action="/messages/{{ $message->id }}/star">
       {{ csrf_field() }}
-      <button class="btn btn-xs btn-default"><strong>&#9734;</strong></button>
-@endif
+      <button class="btn btn-xs btn-default {{ $star_class }}"><strong>&#9734;</strong></button>
     </form>
+    @endif
+
   </div>
 
 
